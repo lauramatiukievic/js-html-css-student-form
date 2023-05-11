@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form id="student-form" novalidate>
+      <div class="form-control">
+        <label for="student-name">Name</label>
+        <input type="text" name="name" id="student-name" placeholder="Write your name" required />
+      </div>
+
+      <div class="form-control">
+        <label for="student-surname">Surname</label>
+        <input type="text" name="surname" id="student-surname" placeholder="Place for your surname!" required />
+      </div>
+
+      <div class="form-control">
+        <label for="student-age">Age</label>
+        <input type="number" min="1" max="100" name="age" id="student-age" placeholder="Age here!" required />
+      </div>
+
+      <div class="form-control">
+        <label for="student-number">Phone Number</label>
+        <input type="tel" name="phoneNumber" id="student-number" placeholder="Place for your phone number!" required />
+      </div>
+
+      <div class="form-control">
+        <label for="student-email">Email</label>
+        <input type="email" name="email" id="student-email" placeholder="Place for your email!" required />
+      </div>
+
+      <div class="form-control">
+        <label for="student-level">It Knowledge:</label>
+        <input type="range" min="1" max="10" step="0" name="score" id="student-level" value="5" oninput="this.nextElementSibling.value = this.value" />
+        <output>3</output>
+      </div>
+
+      <fieldset class="programing-language">
+        <legend>Choose your programing language:</legend>
+        <div>
+          <input type="checkbox" name="language" id="js" value="Javascript" />
+          <label for="js">Javascript</label>
+        </div>
+
+        <div>
+          <input type="checkbox" name="language" id="java" value="Java" />
+          <label for="java">Java</label>
+        </div>
+
+        <div>
+          <input type="checkbox" name="language" id="php" value="Php" />
+          <label for="php">Php</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="chooseGroup">
+        <legend>Choose Group</legend>
+
+        <div class="form-control">
+          <label for="g1"> Feu 1</label>
+          <input type="radio" name="group" id="g1" value="Feu 1" />
+        </div>
+        <div class="form-control">
+          <label for="g2"> Feu 2</label>
+          <input type="radio" name="group" id="g2" value="Feu 2" />
+        </div>
+
+        <div class="form-control">
+          <label for="g3"> Feu 3</label>
+          <input type="radio" name="group" id="g3" value="Feu 3" />
+        </div>
+        <div class="form-control">
+          <label for="g4"> Feu 4</label>
+          <input type="radio" name="group" id="g4" value="Feu 4" />
+        </div>
+        <div class="form-control">
+          <label for="g5"> Feu 5</label>
+          <input type="radio" name="group" id="g5" value="Feu 5" />
+        </div>
+        <div class="form-control">
+          <label for="g6"> Feu 6</label>
+          <input type="radio" name="group" id="g6" value="Feu 6" />
+        </div>
+        <div class="form-control">
+          <label for="g7"> Feu 7</label>
+          <input type="radio" name="group" id="g7" value="Feu 7" />
+        </div>
+      </fieldset>
+
+      <input type="submit" value="Create Student" />
+    </form>
+
+    <div id="student-list"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+<!-- // PIRMA DALIS:
+// Sukurti kontaktų formą.
+// 1. Kontaktų formoje turi būti šie laukeliai:
+//     1. Tekstinis laukelis vardui (privalomas).
+//     2. Tekstinis laukelis pavardei (privalomas).
+//     3. Skaičiaus laukelis amžiui (privalomas).
+//     4. Laukelis įvesti telefono numerį (neprivalomas).
+//     5. Laukelis įvesti el. paštą (privalomas).
+//     6. Range tipo laukelis, kuris skirtas įvertinti savo IT žinias nuo 1 iki 10. Galimas vertinimas tik sveikiems skaičiams.
+//     7. Radio tipo laukeliai, kuriuose pasirenkamas grupės numeris. Turi būti galimybė pasirinkti grupes nuo FEU 1gr. iki FEU 7gr.
+//     8. Šalia kiekvieno įvesties (input) elemento, pridėti label elementą, kuris žymi laukelio pavadinimą.
+
+
+ -->
