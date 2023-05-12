@@ -9,47 +9,47 @@ let students = [
     studentEmail: `ermelinda990@gmail.com`,
     studentSkill: 6,
     studentGroup: `Feu7`,
-    studentProgramingLanguage: ["Java", "Php", "Javascript"],
+    programmingLanguages: ["Java", "Php", "Javascript"],
   },
   {
     studentName: `Arnas`,
     lastName: `Mur`,
-    studentAge: "11",
+    studentAge: 11,
     studentNumber: 876673234,
     studentEmail: `arnasmur9@gmail.com`,
     studentSkill: 6,
-    studentGroup: `Feu7`,
-    studentProgramingLanguage: ["Php"],
+    studentGroup: `Feu 7`,
+    programmingLanguages: [],
   },
   {
     studentName: `Ricardas`,
     lastName: `Matiuk`,
-    studentAge: "23",
+    studentAge: 23,
     studentNumber: 8766767754,
     studentEmail: `ricardmatiuk@gmail.com`,
     studentSkill: 6,
-    studentGroup: `Feu7`,
-    studentProgramingLanguage: ["Java", "Php", "Javascript"],
+    studentGroup: `Feu 7`,
+    programmingLanguages: ["Java", "Php", "Javascript"],
   },
   {
     studentName: `Martynas`,
     lastName: `Mur`,
-    studentAge: "7",
+    studentAge: 7,
     studentNumber: 8766767754,
     studentEmail: `martynmur1@gmail.com`,
     studentSkill: 7,
-    studentGroup: `Feu7`,
-    studentProgramingLanguage: ["Java"],
+    studentGroup: `Feu 7`,
+    programmingLanguages: ["Java"],
   },
   {
     studentName: `Arturas`,
     lastName: `Matiuk`,
-    studentAge: "24",
+    studentAge: 24,
     studentNumber: 8766767754,
     studentEmail: `arturmatiuk@gmail.com`,
     studentSkill: 6,
-    studentGroup: `Feu7`,
-    studentProgramingLanguage: ["Java", "Php"],
+    studentGroup: `Feu 7`,
+    programmingLanguages: ["Java", "Php"],
   },
 ];
 loadStudents();
@@ -72,7 +72,8 @@ studentForm.addEventListener("submit", (event) => {
   let studentEmail = event.target.email.value;
   let studentSkill = event.target.score.value;
   let studentGroup = event.target.group.value;
-  studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup);
+  let programmingLanguages = Array.from(document.querySelectorAll(`[name='language']:checked`)).map((language) => language.value);
+  studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages);
 
   event.target.reset();
 
@@ -82,8 +83,8 @@ studentForm.addEventListener("submit", (event) => {
 });
 
 function loadStudents() {
-  students.forEach((student) => {
-    studentContent(student.studentName, student.lastName, student.studentAge, student.studentNumber, student.studentEmail, student.studentSkill, student.group);
+  students.map((student) => {
+    studentContent(student.studentName, student.lastName, student.studentAge, student.studentNumber, student.studentEmail, student.studentSkill, student.studentGroup, student.programmingLanguages);
   });
 }
 
@@ -151,7 +152,7 @@ function hideInformation(hidenInfoFor) {
   }, 5000);
 }
 
-function studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup) {
+function studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages) {
   let studentList = document.getElementById("student-list");
 
   let studentItem = document.createElement("div");
@@ -182,17 +183,26 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
   let groupName = document.createElement("p");
   groupName.innerText = `Group name: ${studentGroup}`;
 
-  let addProgramingLanguage = document.querySelectorAll(`[name='language']:checked`);
-  let olElement = document.createElement("ul");
-
   let aboutPrograming = document.createElement("p");
-  aboutPrograming.innerText = `Student contact:`;
+  aboutPrograming.innerHTML = `Programavimo kalbos:`;
 
-  addProgramingLanguage.forEach((language) => {
-    let liElement = document.createElement("li");
-    liElement.innerText = language.value;
-    olElement.append(liElement);
-  });
+  let interestsWrapper = document.createElement("div");
+  let ulElement = document.createElement("ul");
+
+  if (programmingLanguages.length > 0) {
+    programmingLanguages.forEach((language) => {
+      let liElement = document.createElement("li");
+      liElement.innerText = language;
+      ulElement.append(liElement);
+    });
+    interestsWrapper.append(aboutPrograming, ulElement);
+  } else {
+    let noInterestTitle = document.createElement("span");
+    noInterestTitle.textContent = "No interests :/";
+
+    interestsWrapper.append(aboutPrograming, noInterestTitle);
+  }
+  // const interestsData = [...interests].map((interest) => interest.value);
 
   let buttonshow = document.createElement("button");
   let showContact = `Rodyti asmens duomenis`;
@@ -224,10 +234,52 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
     hideInformation(deletedStud);
   });
 
-  studentItem.prepend(studentContacts, hideInfo, name, surname, age, aboutContact, contactOl, skills, groupName, aboutPrograming, olElement, buttonshow, deleteStudent);
+  let editStudentButton = document.createElement("button");
+  editStudentButton.textContent = "Edit Student";
+  editStudentButton.addEventListener("click", () => {
+    let nameInput = studentForm.name;
+    nameInput.value = studentName;
+
+    let surnameInput = studentForm.surname;
+    surnameInput.value = lastName;
+
+    let ageInput = studentForm.age;
+    ageInput.value = studentAge;
+
+    let phoneInput = studentForm.phoneNumber;
+    phoneInput.value = studentNumber;
+
+    let emailInput = studentForm.email;
+    emailInput.value = studentEmail;
+
+    let skillsInput = studentForm.score;
+    skillsInput.value = studentSkill;
+
+    let groupInput = studentForm.group;
+    groupInput.value = studentGroup;
+
+    let languageInput = studentForm.language;
+    languageInput.value = programmingLanguages;
+  });
+
+  studentItem.prepend(studentContacts, hideInfo, name, surname, age, aboutContact, contactOl, skills, groupName, interestsWrapper, buttonshow, deleteStudent, editStudentButton);
   contactOl.append(number, email);
   studentList.prepend(studentItem);
 }
+
+// studentName: `Arturas`,
+//     lastName: `Matiuk`,
+//     studentAge: 24,
+//     studentNumber: 8766767754,
+//     studentEmail: `arturmatiuk@gmail.com`,
+//     studentSkill: 6,
+//     studentGroup: `Feu 7`,
+//     addProgramingLanguage: ["Java", "Php"],
+
+// AŠTUNTA UŽDUOTIS (local storage):
+// 1. Vedamą tekstą į input elementus išsaugoti į localStorage.
+// 2. Perkrovus puslapį localStorage esančiomis reikšmėmis užpildyti input elementus.
+// 3. Jeigu sukuriamas studentas, tai localStorage esančias reikšmes reikia išvalyti.
 
 // PENKTA UŽDUOTIS (formos validacija naudojant JavaScript):
 // 1. Priduodant formą (submit) patikrinti ar privalomi laukeliai nėra tušti.
