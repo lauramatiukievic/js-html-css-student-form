@@ -149,7 +149,7 @@ function validateStudent() {
 }
 
 function setRedStyleForField(requiredField, text) {
-  requiredField.style.border = `2px solid red`;
+  requiredField.classList.add("error");
 
   let errorMes = document.createElement(`span`);
   errorMes.classList.add(`input-error-message`);
@@ -159,6 +159,15 @@ function setRedStyleForField(requiredField, text) {
   requiredField.after(errorMes);
 
   return;
+}
+
+function resetStyleForFields(fields) {
+  fields.forEach((field) => {
+    field.classList.remove("error");
+    if (field.nextElementSibling && field.nextElementSibling.classList.contains("input-error-message")) {
+      field.nextElementSibling.remove();
+    }
+  });
 }
 
 function hideInformation(hidenInfoFor) {
@@ -202,7 +211,7 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
 
   let interestsWrapper = document.createElement("div");
   let ulElement = document.createElement("ul");
-  debugger;
+
   if (programmingLanguages.length > 0) {
     programmingLanguages.forEach((language) => {
       let liElement = document.createElement("li");
@@ -284,6 +293,8 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
         checkbox.checked = false;
       }
     });
+    const fields = [nameInput, surnameInput, ageInput, phoneInput, emailInput];
+    resetStyleForFields(fields);
 
     studentForm["studentFormSubmit"].value = "save changes";
     editStudent = studentItem;
