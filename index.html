@@ -37,7 +37,7 @@
       <div class="form-control">
         <label for="student-level">It Knowledge:</label>
         <input type="range" min="1" max="10" step="0" name="score" id="student-level" value="5" oninput="this.nextElementSibling.value = this.value" />
-        <output>3</output>
+        <output name="selectedScore"></output>
       </div>
 
       <fieldset class="programing-language">
@@ -92,7 +92,7 @@
         </div>
       </fieldset>
 
-      <input id="submitB" type="submit" value="Create Student" />
+      <input id="studentFormSubmit" type="submit" value="Create Student" />
     </form>
 
     <div id="student-list"></div>

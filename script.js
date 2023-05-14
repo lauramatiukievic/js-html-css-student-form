@@ -1,6 +1,7 @@
 const studentForm = document.getElementById("student-form");
+const studentList = document.getElementById("student-list");
 
-let students = [
+const students = [
   {
     studentName: `Laura`,
     lastName: `Matiuk`,
@@ -8,7 +9,7 @@ let students = [
     studentNumber: 8766767754,
     studentEmail: `ermelinda990@gmail.com`,
     studentSkill: 6,
-    studentGroup: `Feu7`,
+    studentGroup: `Feu 3`,
     programmingLanguages: ["Java", "Php", "Javascript"],
   },
   {
@@ -18,7 +19,7 @@ let students = [
     studentNumber: 876673234,
     studentEmail: `arnasmur9@gmail.com`,
     studentSkill: 6,
-    studentGroup: `Feu 7`,
+    studentGroup: `Feu 4`,
     programmingLanguages: [],
   },
   {
@@ -54,6 +55,8 @@ let students = [
 ];
 loadStudents();
 
+let editStudent = null;
+
 studentForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -73,7 +76,19 @@ studentForm.addEventListener("submit", (event) => {
   let studentSkill = event.target.score.value;
   let studentGroup = event.target.group.value;
   let programmingLanguages = Array.from(document.querySelectorAll(`[name='language']:checked`)).map((language) => language.value);
-  studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages);
+
+  // studentList.prepend(studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages));
+
+  if (editStudent) {
+    let updatedStudent = studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages);
+    editStudent.replaceWith(updatedStudent);
+
+    studentForm["studentFormSubmit"].value = "Create student";
+    editStudent = null;
+  } else {
+    let newStudent = studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages);
+    studentList.prepend(newStudent);
+  }
 
   event.target.reset();
 
@@ -84,7 +99,8 @@ studentForm.addEventListener("submit", (event) => {
 
 function loadStudents() {
   students.map((student) => {
-    studentContent(student.studentName, student.lastName, student.studentAge, student.studentNumber, student.studentEmail, student.studentSkill, student.studentGroup, student.programmingLanguages);
+    let studentElement = studentContent(student.studentName, student.lastName, student.studentAge, student.studentNumber, student.studentEmail, student.studentSkill, student.studentGroup, student.programmingLanguages);
+    studentList.prepend(studentElement);
   });
 }
 
@@ -133,7 +149,6 @@ function validateStudent() {
 }
 
 function setRedStyleForField(requiredField, text) {
-  console.log(`neteisingai`);
   requiredField.style.border = `2px solid red`;
 
   let errorMes = document.createElement(`span`);
@@ -153,9 +168,8 @@ function hideInformation(hidenInfoFor) {
 }
 
 function studentContent(studentName, lastName, studentAge, studentNumber, studentEmail, studentSkill, studentGroup, programmingLanguages) {
-  let studentList = document.getElementById("student-list");
-
   let studentItem = document.createElement("div");
+  studentItem.classList.add("student-item");
 
   let studentContacts = document.createElement("h2");
   studentContacts.innerText = `Student information`;
@@ -188,7 +202,7 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
 
   let interestsWrapper = document.createElement("div");
   let ulElement = document.createElement("ul");
-
+  debugger;
   if (programmingLanguages.length > 0) {
     programmingLanguages.forEach((language) => {
       let liElement = document.createElement("li");
@@ -205,12 +219,12 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
   // const interestsData = [...interests].map((interest) => interest.value);
 
   let buttonshow = document.createElement("button");
-  let showContact = `Rodyti asmens duomenis`;
+  let showContact = `Show Private info`;
   buttonshow.innerText = showContact;
 
   buttonshow.addEventListener(`click`, () => {
     if (buttonshow.innerText == showContact) {
-      buttonshow.innerText = `Paslepti asmens duomenis`;
+      buttonshow.innerText = `Hide Private info`;
       number.innerText = `Phone: ${studentNumber}`;
       email.innerText = `Email: ${studentEmail}`;
     } else {
@@ -221,21 +235,22 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
   });
 
   let hideInfo = document.createElement("span");
-  hideInfo.innerText = `Sukurtas studentas ${studentName} ${lastName}`;
+  hideInfo.innerText = `Created student ${studentName} ${lastName}`;
   hideInformation(hideInfo);
 
   let deleteStudent = document.createElement("button");
-  deleteStudent.innerHTML = `Istrinti studenta`;
+  deleteStudent.innerHTML = `Remove student`;
   deleteStudent.addEventListener("click", () => {
     studentItem.remove();
     let deletedStud = document.createElement("span");
-    deletedStud.innerText = `Istrintas studentas ${studentName} ${lastName}`;
+    deletedStud.innerText = `Student deleted ${studentName} ${lastName}`;
     studentList.prepend(deletedStud);
     hideInformation(deletedStud);
   });
 
   let editStudentButton = document.createElement("button");
   editStudentButton.textContent = "Edit Student";
+
   editStudentButton.addEventListener("click", () => {
     let nameInput = studentForm.name;
     nameInput.value = studentName;
@@ -253,18 +268,31 @@ function studentContent(studentName, lastName, studentAge, studentNumber, studen
     emailInput.value = studentEmail;
 
     let skillsInput = studentForm.score;
+    let skillsNumber = studentForm.selectedScore;
+    skillsNumber.innerText = studentSkill;
     skillsInput.value = studentSkill;
 
     let groupInput = studentForm.group;
     groupInput.value = studentGroup;
 
-    let languageInput = studentForm.language;
-    languageInput.value = programmingLanguages;
+    let languages = studentForm.language;
+
+    languages.forEach((checkbox) => {
+      if (programmingLanguages.includes(checkbox.value)) {
+        checkbox.checked = true;
+      } else {
+        checkbox.checked = false;
+      }
+    });
+
+    studentForm["studentFormSubmit"].value = "save changes";
+    editStudent = studentItem;
   });
 
-  studentItem.prepend(studentContacts, hideInfo, name, surname, age, aboutContact, contactOl, skills, groupName, interestsWrapper, buttonshow, deleteStudent, editStudentButton);
+  studentItem.append(studentContacts, hideInfo, name, surname, age, aboutContact, contactOl, skills, groupName, interestsWrapper, buttonshow, deleteStudent, editStudentButton);
   contactOl.append(number, email);
-  studentList.prepend(studentItem);
+  // studentList.prepend(studentItem);
+  return studentItem;
 }
 
 // studentName: `Arturas`,

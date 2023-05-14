@@ -17,3 +17,6 @@ div {
   flex-wrap: wrap;
   flex-direction: column;
 } */
+input.error {
+  border: 2px solid red;
+}
